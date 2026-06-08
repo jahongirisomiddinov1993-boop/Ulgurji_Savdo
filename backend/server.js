@@ -69,6 +69,9 @@ const pool = new Pool({
   password: process.env.PGPASSWORD || '',
   database: process.env.PGDATABASE || 'ulgurji_savdo',
   port: parseInt(process.env.PGPORT) || 5432,
+  // Neon/Render kabi managed PostgreSQL SSL talab qiladi.
+  // Lokal rivojlanishda (NODE_ENV !== 'production') SSL o'chiriladi.
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 });
 
 // DB ulanishni tekshirish

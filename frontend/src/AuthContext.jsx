@@ -28,6 +28,18 @@ export function AuthProvider({ children }) {
   const [business, setBusiness] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Xavfsizlik: agar Clerk 8 soniyada yuklanmasa, spinnerni to'xtatib
+  // login sahifani ko'rsatamiz (cheksiz aylanishning oldini olish)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!isLoaded) {
+        console.warn('Clerk 8 soniyada yuklanmadi — login sahifa ko\'rsatilmoqda.');
+        setLoading(false);
+      }
+    }, 8000);
+    return () => clearTimeout(timer);
+  }, [isLoaded]);
+
   /**
    * authFetch — Authorization: Bearer <token> headeri bilan fetch
    * Barcha API so'rovlarida shu funksiyadan foydalaning
